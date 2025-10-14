@@ -62,7 +62,7 @@ bool do_exec(int count, ...)
  *
 */
     va_end(args);
-
+    fflush(stdout);
     pid_t pid = fork();
     if (pid < 0)
     {
@@ -116,7 +116,7 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
 */
 
     va_end(args);
-
+    fflush(stdout);
     pid_t pid = fork();
     if (pid < 0)
     {
