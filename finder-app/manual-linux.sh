@@ -35,6 +35,7 @@ if [ ! -e ${OUTDIR}/linux-stable/arch/${ARCH}/boot/Image ]; then
     echo "Checking out version ${KERNEL_VERSION}"
     git checkout ${KERNEL_VERSION}
     # TODO: Add your kernel build steps here
+    make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} mrproper
     make -j4 ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} defconfig dtbs all
 fi
 
@@ -92,10 +93,14 @@ make clean
 make CROSS_COMPILE=${CROSS_COMPILE}
 # TODO: Copy the finder related scripts and executables to the /home directory
 # on the target rootfs
-cp ${FINDER_APP_DIR}/writer ${OUTDIR}/rootfs/home/
-cp ${FINDER_APP_DIR}/*.sh ${OUTDIR}/rootfs/home/
-mkdir -p ${OUTDIR}/rootfs/home/conf
-cp ${FINDER_APP_DIR}/conf/* ${OUTDIR}/rootfs/home/conf/
+cp "${FINDER_APP_DIR}/writer"  "${OUTDIR}/rootfs/home/"
+cp "${FINDER_APP_DIR}/finder.sh" "${OUTDIR}/rootfs/home/"
+cp "${FINDER_APP_DIR}/finder-test.sh" "${OUTDIR}/rootfs/home/"
+cp "${FINDER_APP_DIR}/autorun-qemu.sh" "${OUTDIR}/rootfs/home/"
+
+mkdir -p "${OUTDIR}/rootfs/home/conf"
+cp "${FINDER_APP_DIR}/conf/username.txt" "${OUTDIR}/rootfs/home/conf/"
+cp "${FINDER_APP_DIR}/conf/assignment.txt" "${OUTDIR}/rootfs/home/conf/"
 
 # TODO: Chown the root directory
 sudo chown -R root:root ${OUTDIR}/rootfs
